@@ -147,7 +147,7 @@ public class V8ScriptTemplateView extends AbstractUrlBasedView {
         V8Object modelAttributes = mapToV8Object(v8, runtimeObjects, model);
         runtimeObjects.add(modelAttributes);
 
-        Object html = v8.executeJSFunction("render", template, modelAttributes);
+        Object html = v8.executeJSFunction(this.renderFunction, template, modelAttributes);
         response.getWriter().write(String.valueOf(html));
 
         runtimeObjects.forEach(V8Value::release);
