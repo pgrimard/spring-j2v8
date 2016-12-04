@@ -36,5 +36,6 @@ or `V8Object` where appropriate.  Nested arrays, `Map` and `Iterable` instances 
 ```javascript
 window.render = function render(template, model) {
   // merge the template with the model and return a string
+  return template.replace('SOME_PLACEHOLDER', JSON.stringify(model.attribute));
 };
 ```
