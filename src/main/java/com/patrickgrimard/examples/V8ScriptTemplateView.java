@@ -156,18 +156,13 @@ public class V8ScriptTemplateView extends AbstractUrlBasedView {
             if (resource.exists()) return resource;
         }
 
-        return null;
+        throw new IllegalStateException(String.format("Resource %s not found", location));
     }
 
     protected String getResourceAsString(String path) throws IOException {
         Resource resource = getResource(path);
-
-        if (resource != null && resource.exists()) {
-            InputStreamReader reader = new InputStreamReader(resource.getInputStream(), this.charset);
-            return FileCopyUtils.copyToString(reader);
-        } else {
-            throw new IllegalStateException(String.format("Resource %s not found", path));
-        }
+        InputStreamReader reader = new InputStreamReader(resource.getInputStream(), this.charset);
+        return FileCopyUtils.copyToString(reader);
     }
 
     protected V8ScriptTemplateConfig autodetectViewConfig() throws BeansException {
