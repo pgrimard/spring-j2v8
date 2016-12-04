@@ -140,7 +140,7 @@ public class V8ScriptTemplateView extends AbstractUrlBasedView {
                 .collect(toList());
 
         String template = getResourceAsString(getUrl());
-        V8Object modelAttributes = modelToV8Object(v8, model);
+        V8Object modelAttributes = mapToV8Object(v8, model);
 
         Object html = v8.executeJSFunction("render", template, modelAttributes);
         response.getWriter().write(String.valueOf(html));
@@ -150,7 +150,7 @@ public class V8ScriptTemplateView extends AbstractUrlBasedView {
         v8.release();
     }
 
-    private V8Object modelToV8Object(V8 v8, Map<String, Object> model) {
+    private V8Object mapToV8Object(V8 v8, Map<String, Object> model) {
         V8Object result = new V8Object(v8);
 
         model.forEach((key, object) -> {
@@ -171,7 +171,7 @@ public class V8ScriptTemplateView extends AbstractUrlBasedView {
             } else if (object instanceof String) {
                 result.add(key, (String) object);
             } else if (object instanceof Map) {
-                result.add(key, modelToV8Object(v8, (Map<String, Object>) object));
+                result.add(key, mapToV8Object(v8, (Map<String, Object>) object));
             } else if (object instanceof Iterable) {
                 result.add(key, modelToV8Array(v8, (Iterable<?>) object));
             } else {
@@ -203,7 +203,7 @@ public class V8ScriptTemplateView extends AbstractUrlBasedView {
             } else if (object instanceof String) {
                 result.push((String) object);
             } else if (object instanceof Map) {
-                result.push(modelToV8Object(v8, (Map<String, Object>) object));
+                result.push(mapToV8Object(v8, (Map<String, Object>) object));
             } else if (object instanceof Iterable) {
                 result.push(modelToV8Array(v8, (Iterable<?>) object));
             } else {
