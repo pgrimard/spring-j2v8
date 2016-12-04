@@ -2,6 +2,7 @@ package com.patrickgrimard.examples;
 
 import com.eclipsesource.v8.V8;
 import com.eclipsesource.v8.V8Object;
+import com.eclipsesource.v8.V8Value;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactoryUtils;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
@@ -19,7 +20,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
+
+import static java.util.stream.Collectors.toList;
 
 /**
  * Created on 2016-12-03
@@ -123,24 +127,26 @@ public class V8ScriptTemplateView extends AbstractUrlBasedView {
     @Override
     protected void renderMergedOutputModel(Map<String, Object> model, HttpServletRequest request, HttpServletResponse response) throws Exception {
         V8 v8 = V8.createV8Runtime("window");
+
+        List<V8Value> scriptResults = Arrays.stream(this.scripts)
+                .map(script -> {
+                    try {
+                        return v8.executeObjectScript(getResourceAsString(script));
+                    } catch (IOException e) {
+                        throw new IllegalStateException(String.format("Failed to execute script %s", script), e);
+                    }
+                })
+                .collect(toList());
+
         String template = getResourceAsString(getUrl());
-
         V8Object modelAttributes = new V8Object(v8);
-        model.forEach((k, v) -> modelAttributes.add(k, (String) v));
-
-        Arrays.asList(scripts).forEach(script -> {
-            try {
-                v8.executeScript(getResourceAsString(script));
-            } catch (IOException e) {
-                throw new IllegalStateException(String.format("Unable to execute script %s", script));
-            }
-        });
+        model.forEach((k, v) -> modelAttributes.add(k, (String) v)); //TODO Values may not always be String values
 
         Object html = v8.executeJSFunction("render", template, modelAttributes);
+        response.getWriter().write(String.valueOf(html));
 
         modelAttributes.release();
-
-        response.getWriter().write(String.valueOf(html));
+        scriptResults.forEach(V8Value::release);
         v8.release();
     }
 
