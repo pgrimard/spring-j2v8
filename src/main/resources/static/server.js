@@ -9,6 +9,6 @@
  */
 window.render = function render(template, model) {
   return template
-    .replace('SERVER_RENDERED_HTML', model.req)
-    .replace('SERVER_RENDERED_STATE', model.initialState);
+    .replace('SERVER_RENDERED_HTML', JSON.stringify(model.req))
+    .replace('SERVER_RENDERED_STATE', JSON.stringify(model.initialState));
 };
