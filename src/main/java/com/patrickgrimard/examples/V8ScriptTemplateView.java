@@ -98,7 +98,7 @@ public class V8ScriptTemplateView extends AbstractUrlBasedView {
         if (this.scripts == null && viewConfig.getScripts() != null) {
             this.scripts = viewConfig.getScripts();
         }
-        if(this.renderFunction == null) {
+        if (this.renderFunction == null) {
             this.renderFunction = (viewConfig.getRenderFunction() != null ? viewConfig.getRenderFunction() : DEFAULT_RENDER_FUNCTION);
         }
         if (this.getContentType() == null) {
@@ -156,7 +156,7 @@ public class V8ScriptTemplateView extends AbstractUrlBasedView {
             if (resource.exists()) return resource;
         }
 
-        throw new IllegalStateException(String.format("Resource %s not found", location));
+        return null;
     }
 
     protected String getResourceAsString(String path) throws IOException {
