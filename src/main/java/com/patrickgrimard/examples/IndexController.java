@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,6 +30,19 @@ public class IndexController {
         else
             req.put("location", root);
         model.addAttribute("req", mapper.writeValueAsString(req));
+
+        Map<String, Object> initialState = new HashMap<>();
+        initialState.put("hello", "world");
+
+        Map<String, Object> deep = new HashMap<>();
+        deep.put("deepProp", "deepValue");
+        deep.put("anotherProp", "anotherValue");
+        deep.put("anArray", new String[]{"hello", "world", "again"});
+        deep.put("anIterable", Arrays.asList("hello", "world", "yet again"));
+        initialState.put("deep", deep);
+
+        model.addAttribute("initialState", mapper.writeValueAsString(initialState));
+
 
         return "index";
     }
