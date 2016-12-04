@@ -27,7 +27,7 @@ public class SpringJ2V8Application {
 
 ## Writing the JavaScript Render Function
 When rendering the view, `V8ScriptTemplateView` passes 2 arguments to the render function, the `template` and the `model`.
-The render function should return a string which will be written to the `HttpServletResponse`.
+The render function should return a string which will be written to the `HttpServletResponse` body.
 
 ```javascript
 window.render = function render(template, model) {
