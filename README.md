@@ -3,7 +3,9 @@
 This project demonstrates using [J2V8](https://github.com/eclipsesource/J2V8) to render views with JavaScript on the server.
 
 ## Configuration
-Configuration is as simple as defining a `V8ScriptTemplateViewResolver` and a `V8ScriptTemplateConfigurer`.
+In its simplest form, configuration is as simple as defining a `V8ScriptTemplateViewResolver` and a
+`V8ScriptTemplateConfigurer` while passing it the scripts required to render views.  The `V8ScriptTemplateConfigurer`
+also provides a fluent API for setting additional config properties.
 
 ```java
 @SpringBootApplication
