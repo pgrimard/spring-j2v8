@@ -15,7 +15,7 @@ public class SpringJ2V8Application {
     }
 
     @Bean
-    public V8ScriptTemplateConfigurer v8ScriptTemplateConfigurer() {
+    public V8ScriptTemplateConfigurer scriptTemplateConfigurer() {
         return new V8ScriptTemplateConfigurer("static/server.js");
     }
 
