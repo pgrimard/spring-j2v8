@@ -113,6 +113,14 @@ public class V8ScriptTemplateView extends AbstractUrlBasedView {
     }
 
     @Override
+    protected void prepareResponse(HttpServletRequest request, HttpServletResponse response) {
+        super.prepareResponse(request, response);
+
+        setResponseContentType(request, response);
+        response.setCharacterEncoding(this.charset.name());
+    }
+
+    @Override
     protected void renderMergedOutputModel(Map<String, Object> model, HttpServletRequest request, HttpServletResponse response) throws Exception {
         V8 v8 = V8.createV8Runtime("window");
         String template = getResourceAsString(getUrl());
