@@ -173,7 +173,7 @@ public class V8ScriptTemplateView extends AbstractUrlBasedView {
             } else if (object instanceof Map) {
                 result.add(key, mapToV8Object(v8, (Map<String, Object>) object));
             } else if (object instanceof Iterable) {
-                result.add(key, modelToV8Array(v8, (Iterable<?>) object));
+                result.add(key, modelToV8Array(v8, (Iterable<Object>) object));
             } else {
                 throw new IllegalArgumentException("Unsupported Object of type: " + object.getClass());
             }
@@ -182,7 +182,7 @@ public class V8ScriptTemplateView extends AbstractUrlBasedView {
         return result;
     }
 
-    private V8Array modelToV8Array(V8 v8, Iterable<?> iterable) {
+    private V8Array modelToV8Array(V8 v8, Iterable<Object> iterable) {
         V8Array result = new V8Array(v8);
 
         iterable.forEach(object -> {
@@ -205,7 +205,7 @@ public class V8ScriptTemplateView extends AbstractUrlBasedView {
             } else if (object instanceof Map) {
                 result.push(mapToV8Object(v8, (Map<String, Object>) object));
             } else if (object instanceof Iterable) {
-                result.push(modelToV8Array(v8, (Iterable<?>) object));
+                result.push(modelToV8Array(v8, (Iterable<Object>) object));
             } else {
                 throw new IllegalArgumentException("Unsupported Object of type: " + object.getClass());
             }
